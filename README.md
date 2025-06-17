@@ -1,0 +1,2 @@
+# Injectionchecker
+pdf,docx,pptx形式の拡張子に文字が隠されていないかチェックするウェブアプリ
