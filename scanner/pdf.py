@@ -21,10 +21,20 @@ class PdfScanner(BaseScanner):
 
         # テキストレンダリング透過
         for m in CA_PATTERN.finditer(data):
-            findings.append(Finding(
-                location=f"offset {m.start()}",
-                snippet=f"/CA 0… ({m.group(0)[:15]}…)".decode(errors="ignore")
-            ))
+            # m.group(0) が bytes の場合と str の場合の両方を安全に扱う
+            snippet_raw = m.group(0)
+            snippet_str = (
+                snippet_raw.decode(errors="ignore")  # bytes → str
+                if isinstance(snippet_raw, (bytes, bytearray))
+                else snippet_raw                     # すでに str
+            )
+
+            findings.append(
+                Finding(
+                    location=f"offset {m.start()}",
+                    snippet=f"/CA 0… ({snippet_str[:15]}…)"
+                )
+            )
 
         # Text Rendering Mode = 3
         for m in TR3_PATTERN.finditer(data):

@@ -6,12 +6,15 @@ from typing import List, Tuple, cast
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE  # type: ignore
 from pptx.text.text import TextFrame
+from typing import cast
 
 from .base import BaseScanner, Finding
 from .unicode_utils import (CONTRAST_THRESHOLD, MIN_FONT_PT,
                             contains_invisible_unicode, contrast_ratio)
 
 HIDDEN_ATTR = "{http://schemas.openxmlformats.org/presentationml/2006/main}show"
+
+
 
 class PptxScanner(BaseScanner):
     '''.pptx 専用スキャナ'''
@@ -30,10 +33,10 @@ class PptxScanner(BaseScanner):
 
             # 各 shape のテキスト走査
             for shape in slide.shapes:
-                if not shape.has_text_frame:
+                if not getattr(shape, "has_text_frame", False):
                     continue
-
-                text_frame = cast(TextFrame, shape.text_frame)
+                text_frame = cast(TextFrame, shape.text_frame)  # type: ignore[attr-defined]
+                
                 for paragraph in text_frame.paragraphs:
                     for run in paragraph.runs:
                         txt = run.text or ""
