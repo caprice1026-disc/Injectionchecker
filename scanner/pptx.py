@@ -16,7 +16,7 @@ class PptxScanner(BaseScanner):
     '''.pptx 専用スキャナ'''
 
     def scan(self, path: Path) -> Tuple[bool, List[Finding]]:
-        prs = Presentation(path)
+        prs = Presentation(str(path))
         findings: List[Finding] = []
 
         for s_idx, slide in enumerate(prs.slides, 1):
