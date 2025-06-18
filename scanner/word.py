@@ -19,7 +19,7 @@ class WordScanner(BaseScanner):
     def scan(self, path: Path) -> Tuple[bool, List[Finding]]:
         '''隠匿テキストを検出'''
         findings: List[Finding] = []
-        doc = Document(path)
+        doc = Document(str(path))
 
         # 本文・テーブルなど Run 単位で検査
         for p_idx, para in enumerate(doc.paragraphs, 1):
