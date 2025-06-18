@@ -1,10 +1,11 @@
 '''PowerPoint ファイル (.pptx) を走査'''
 
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, cast
 
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE  # type: ignore
+from pptx.text.text import TextFrame
 
 from .base import BaseScanner, Finding
 from .unicode_utils import (CONTRAST_THRESHOLD, MIN_FONT_PT,
@@ -21,7 +22,7 @@ class PptxScanner(BaseScanner):
 
         for s_idx, slide in enumerate(prs.slides, 1):
             # 非表示スライドチェック slide/@show="0" :contentReference[oaicite:4]{index=4}
-            if slide._element.get(HIDDEN_ATTR) == "0":
+            if slide._element.get(HIDDEN_ATTR, None) == "0":
                 findings.append(Finding(
                     location=f"スライド {s_idx} (非表示)",
                     snippet="このスライドはスライドショーで非表示設定"
@@ -32,7 +33,8 @@ class PptxScanner(BaseScanner):
                 if not shape.has_text_frame:
                     continue
 
-                for paragraph in shape.text_frame.paragraphs:
+                text_frame = cast(TextFrame, shape.text_frame)
+                for paragraph in text_frame.paragraphs:
                     for run in paragraph.runs:
                         txt = run.text or ""
                         if not txt.strip():
