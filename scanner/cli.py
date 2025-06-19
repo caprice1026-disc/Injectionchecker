@@ -2,7 +2,7 @@
    テストやデバッグに使用する予定
 
 使い方:
-    python -m scanner.cli sample.docx
+    python -m scanner.cli test.docx
 '''
 
 import sys
