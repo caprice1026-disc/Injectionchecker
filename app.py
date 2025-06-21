@@ -34,7 +34,7 @@ def show_footer() -> None:
     st.markdown("---")
     st.markdown(
         "ライセンス: AGPLv3 | "
-        "[GitHub](https://github.com/example/repo) | "
+        "[GitHub](https://github.com/caprice1026-disc/Injectionchecker) | "
         "[Twitter](https://twitter.com/example)"
     )
 
