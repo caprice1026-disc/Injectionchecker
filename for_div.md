@@ -62,12 +62,12 @@
 ### アーキテクチャ
 
 ```text
-┌───────────┐    .docx/.pptx/.pdf   ┌────────────┐
-│  Streamlit │─── file upload  ────▶│ scanner.*  │
+┌───────────┐    .docx/.pptx/.pdf  ┌────────────┐
+│  Streamlit│─── file upload  ────▶│ scanner.*  │
 └───────────┘                      └────┬───────┘
-            ▲  Findings(list)              │
-            │                              ▼
-        Quick CLI                JSON / DataFrame
+      ▲  Findings(list)                 │
+      │                                 ▼
+   Quick CLI                      JSON / DataFrame
 ```
 
 * **UI 層** `app.py` — `st.file_uploader` で複数ファイルを受領
@@ -149,7 +149,7 @@ class Finding:
 | ✅  | ディレクトリ構成作成                                     | `prompt-scanner/` 完成                        |
 | ✅  | `unicode_utils.py` / `base.py` / 各 Scanner MVP | Word / PPTX / PDF 基本検査ロジック                  |
 | ✅  | CLI (`scanner/cli.py`)                         | `quick_scan` 動作確認                           |
-| ⏳  | Streamlit UI                                   | アップロード & DataFrame 表示のみ暫定                   |
+| ✅  | Streamlit UI                                   | アップロード & DataFrame 表示のみ暫定                   |
 | ⏳  | 単体テスト (`pytest`)                               | サンプルファイル作成中                                 |
 | ⏳  | プラグイン拡張                                        | SmartArt / VBA / AcroForm / RichMedia / OCG |
 
@@ -159,11 +159,11 @@ class Finding:
 
 | フェーズ                  | 内容                                                        | 予定      |
 | --------------------- | --------------------------------------------------------- | ------- |
-| **UI 強化**             | 結果表の色分け表示、CSV エクスポート                                      | 2025‑07 |
-| **深層解析プラグイン**         | VBA/OLE, SmartArt/XML, PDF `/AcroForm` & `/EmbeddedFiles` | 2025‑08 |
-| **レポート機能**            | HTML/PDF 自動生成 & スコアリング                                    | 2025‑09 |
-| **CI/CD & Docker 配布** | GitHub Actions: pytest + flake8 + mypy                    | 2025‑09 |
-| **社内導入トライアル**         | フィードバックで閾値調整                                              | 2025‑10 |
+| **UI 強化**             | 結果表の色分け表示、CSV エクスポート                                      | |
+| **深層解析プラグイン**         | VBA/OLE, SmartArt/XML, PDF `/AcroForm` & `/EmbeddedFiles` |  |
+| **レポート機能**            | HTML/PDF 自動生成 & スコアリング                                    |  |
+| **CI/CD & Docker 配布** | GitHub Actions: pytest + flake8 + mypy                    |  |
+
 
 ---
 
