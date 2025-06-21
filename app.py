@@ -16,15 +16,17 @@ SCANNERS = {
 
 def show_header() -> None:
     """ヘッダー表示"""
+    st.set_page_config(page_title="prompt-scanner", layout="centered")
     st.title("prompt-scanner")
     st.write(
-        "アップロードしたドキュメントに\n\
-        含まれる不可視テキストを検査するツールです。"
+        "アップロードしたドキュメントに\n"
+        "含まれる不可視テキストを検査するツールです。"
     )
-    st.markdown(
-        "1. `pptx` / `docx` / `pdf` を選択してアップロード\n"
-        + "2. **スキャン開始** ボタンを押します"
-    )
+    with st.expander("使い方", expanded=False):
+        st.markdown(
+            "1. `pptx` / `docx` / `pdf` を選択してアップロード\n"
+            "2. **スキャン開始** ボタンを押します"
+        )
 
 
 def show_footer() -> None:
@@ -69,13 +71,16 @@ def run_scan(files: list) -> None:
     if not results:
         st.info("アップロードされたファイルはありません")
         return
+
     for name, (found, details) in results.items():
-        if not found:
-            st.success(f"{name}: 問題は見つかりませんでした")
-        else:
-            st.error(f"{name}: 不可視テキストを検出")
-            for d in details:
-                st.write(f"- {d.location}: {d.snippet}")
+        with st.expander(name, expanded=True):
+            if not found:
+                st.success("問題は見つかりませんでした")
+            else:
+                st.error("不可視テキストを検出")
+                table = {"場所": [d.location for d in details],
+                         "内容": [d.snippet for d in details]}
+                st.table(table)
 
 
 def main() -> None:

@@ -5,6 +5,9 @@ from zipfile import ZipFile
 from typing import List, Tuple, cast
 
 from docx import Document
+from lxml.etree import _Element
+
+NS_W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 from .base import BaseScanner, Finding
 from .unicode_utils import (
@@ -24,8 +27,20 @@ class WordScanner(BaseScanner):
         # ★ str(path) で型ヒント適合
         doc = Document(str(path))
 
+        def has_page_break(elem: _Element) -> bool:
+            for br in elem.iterfind(f'.//{NS_W}br'):
+                if br.get(f'{NS_W}type') == 'page':
+                    return True
+            if list(elem.iterfind(f'.//{NS_W}lastRenderedPageBreak')):
+                return True
+            return False
+
+        page_idx = 1
+
         for p_idx, para in enumerate(doc.paragraphs, 1):
             for run in para.runs:
+                if has_page_break(run._element):
+                    page_idx += 1
                 text = run.text or ''
                 if not text.strip():
                     continue
@@ -58,7 +73,7 @@ class WordScanner(BaseScanner):
                     snippet = (text[:40]
                                + (f' …+{len(text) - 40}文字' if len(text) > 40 else ''))
                     findings.append(Finding(
-                        location=f'段落 {p_idx}',
+                        location=f'ページ {page_idx} 段落 {p_idx}',
                         snippet=snippet
                     ))
 
