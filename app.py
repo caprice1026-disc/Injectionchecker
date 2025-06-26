@@ -33,9 +33,10 @@ def show_footer() -> None:
     """フッター表示"""
     st.markdown("---")
     st.markdown(
+        # この部分はちゃんと環境変数から取得するように書き換えておくこと
         "ライセンス: AGPLv3 | "
         "[GitHub](https://github.com/caprice1026-disc/Injectionchecker) | "
-        "[Twitter](https://twitter.com/example)"
+        "[Twitter](https://x.com/caprice1026)"
     )
 
 
